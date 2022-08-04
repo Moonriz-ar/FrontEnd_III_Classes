@@ -23,8 +23,6 @@ function getElements() {
 }
 
 window.addEventListener('load', function () {
-  ReactDOM.render(
-    getElements(),
-    document.getElementById('root')
-  )
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(getElements());
 })
