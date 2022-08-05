@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>JSX</title>
     <link rel="stylesheet" type="text/css" href="index.css" />
-    <script type="text/javascript" src="api.js"></script>
+    <script type="text/javascript" src="../api.js"></script>
     <script
       crossorigin
       src="https://unpkg.com/react@18/umd/react.development.js"
@@ -19,13 +19,36 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
-
       let index = 0
 
       function getIndex() {
         index = index + 1
         return index
       }
+
+      function form() {
+        let inputKeys = []
+        function addInputKey() {
+          inputKeys.push(getIndex())
+          return inputKeys
+        }
+        function removeInputKey(index) {
+          inputKeys.splice(index, 1)
+          return inputKeys
+        }
+        return <div>
+          <h1>Form</h1>
+          <button>Agregar al principio</button>
+          {inputs.map((inputKey, index) => {
+            return <div className="flex">
+              <input type="text" key={inputKey} />
+
+            </div>
+          })}
+          </div>
+      }
+
+      const inputs = []
 
       function Title(props) {
         return <h1>{props.children}</h1>
@@ -46,12 +69,17 @@
       function App() {
         const games = getGameNames()
         //console.log(games)
-        return [
-          <Title key="titulo-1">Juegos iconicos</Title>,
-          <Lista key="lista-1" elementos={['Mario', 'Sonic', 'Zelda']} />,
-          <Title key="titulo-2">Todos los juegos</Title>,
-          <Lista key="lista-2" elementos={games} />,
-        ]
+        return <>
+          <Title
+            className='titulo-muy-muy-largo'
+            id='el-id-mas-largo-del-mundo'
+          >
+            Juegos iconicos
+          </Title>
+          <Lista elementos={['Mario', 'Sonic', 'Zelda']} />
+          <Title>Todos los juegos</Title>
+          <Lista elementos={games} />
+        </>
       }
 
       window.addEventListener('load', function () {

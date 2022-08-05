@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <title>REPASO</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="index.css"
+    />
+    <script type="text/javascript" src="../api.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      /**
+       * @param {size} tamanyo del titulo: "small", "medium", "large"
+       * @param {title} contenido del titulo
+       * @param {elements} arreglo de string
+       * @return lista de elementos con un titulo
+       */
+      function ListaSuperReutilizable(props) {
+        console.log(props)
+        return (
+          <>
+            <div className={`title ${props.size}`}>
+              {props.title}
+            </div>
+            <ul>
+              {props.elements.map((element, index) => {
+                return <li key={index}>{element}</li>
+              })}
+            </ul>
+          </>
+        )
+      }
+
+      /**
+       * Componentes de boton resueltos con diferentes etiquetas HTML
+       */
+      function ButtonWithLink(props) {
+        return (
+          <button>
+            <a href='https://www.google.com'>Ir a google</a>
+          </button>
+        )
+      }
+
+      function ButtonOnly(props) {
+        return (
+          <button
+            onClick={() =>
+              (location.href = 'https://www.google.com')
+            }
+          >
+            Ir a google
+          </button>
+        )
+      }
+
+      function ButtonDiv(props) {
+        return (
+          <div
+            className='button-div'
+            onClick={() =>
+              (location.href = 'https://www.google.com')
+            }
+          >
+            Ir a google
+          </div>
+        )
+      }
+
+      /**
+       * Repaso de uso de keys en arreglos
+       * introduccion a useState
+       */
+      let index = 0
+
+      function getIndex() {
+        index = index + 1
+        return index
+      }
+
+      function Form() {
+        //el primer elemento es la variable en cuestion
+        //inicializada con el valor pasado como parametro
+        //el segundo es la funcion que usamos para modificar la variable
+        //NUNCA modificamos directamente la variable directamente
+        const [inputKeys, setInputKeys] = React.useState([])
+
+        function agregarAlFinal() {
+          setInputKeys([...inputKeys, getIndex()])
+        }
+
+        function agregarAlPrincipio() {
+          setInputKeys([getIndex(), ...inputKeys])
+        }
+
+        return (
+          <div className="flex flex-col">
+            <button onClick={agregarAlPrincipio}>Agregar al principio</button>
+            {inputKeys.map((inputKey) => {
+              return (
+                <div key={inputKey} id={inputKey}>
+                  <input type="text" />
+                  {/* nos queda pendiente esta funcionalidad */}
+                  <button>Eliminar</button>
+                </div>
+              )
+            }
+            )}
+            <button onClick={agregarAlFinal}>Agregar al final</button>
+          </div>
+        )
+      }
+
+      function App() {
+        return (
+          <>
+            <Form />
+            <ButtonDiv />
+            <ButtonOnly />
+            <ButtonWithLink />
+            <ListaSuperReutilizable
+              size='large'
+              title='Lista de Productos en stock:'
+              elements={[
+                'Manzana',
+                'Pera',
+                'Naranja',
+                'Banana',
+              ]}
+            >
+              soy un contenido
+            </ListaSuperReutilizable>
+            <ListaSuperReutilizable
+              size='medium'
+              title='Productos en falta:'
+              elements={['Durazno', 'Cereza', 'Anana']}
+            />
+          </>
+        )
+      }
+
+      window.addEventListener('load', function () {
+        const root = ReactDOM.createRoot(
+          document.getElementById('root')
+        )
+        root.render(<App />)
+      })
+    </script>
+  </body>
+</html>
