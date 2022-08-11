@@ -12,7 +12,7 @@
       type="text/css"
       href="index.css"
     />
-    <script type="text/javascript" src="../api.js"></script>
+    <script type="text/javascript" src="../Api/api.js"></script>
     <script
       crossorigin
       src="https://unpkg.com/react@18/umd/react.development.js"
@@ -33,15 +33,14 @@
        * @return lista de elementos con un titulo
        */
       function ListaSuperReutilizable(props) {
-        console.log(props)
         return (
           <>
             <div className={`title ${props.size}`}>
               {props.title}
             </div>
             <ul>
-              {props.elements.map((element, index) => {
-                return <li key={index}>{element}</li>
+              {props.elements.map((e, index) => {
+                return <li key={e}>{e}</li>
               })}
             </ul>
           </>

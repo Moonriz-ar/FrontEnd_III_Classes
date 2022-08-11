@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-undef */
 function Title(props) {
   return React.createElement('h1', null, props.children)
 }
@@ -15,7 +17,7 @@ function Lista(props) {
 
 function getElements() {
   const games = getGameNames()
-  //console.log(games)
+  // console.log(games)
   return [
     React.createElement(Title, { key: 'titulo-1' }, 'Juegos iconicos'),
     React.createElement(Lista, {
