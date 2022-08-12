@@ -1,13 +1,14 @@
+/* eslint-disable */
 import React from 'react'
-import { GameI } from '../../Api/api'
+import { GameI } from '../Class6'
 import Game from './Game'
 import './List.css'
 
-type IProps = {
-  elements: GameI[]
-}
 
-const List: React.FC<IProps> = (props) => {
+
+
+
+export const ListWithProps = (props) => {
   return (
     <ul>
       {props.elements.map((element) => (
@@ -17,4 +18,16 @@ const List: React.FC<IProps> = (props) => {
   )
 }
 
-export default List
+
+
+
+
+
+
+export const ListWithChildren = (props) => {
+  return (
+    <ul>
+      {props.children}
+    </ul>
+  )
+}

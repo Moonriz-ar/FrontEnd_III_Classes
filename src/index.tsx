@@ -2,7 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
-import Class5 from './Class 5 - Components/Class5'
+import Class6 from './Class 6 - Repaso II/Class6'
+// import Class5 from './Class 5 - Components/Class5'
 // import Test from './Test/Test'
 
 const root = ReactDOM.createRoot(
@@ -10,7 +11,7 @@ const root = ReactDOM.createRoot(
 )
 root.render(
   <React.StrictMode>
-    <Class5 />
+    <Class6 />
   </React.StrictMode>
 )
 
