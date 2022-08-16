@@ -2,16 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
-import Class6 from './Class 6 - Repaso II/Class6'
-// import Class5 from './Class 5 - Components/Class5'
-// import Test from './Test/Test'
+import App from './Class 7 - Componentes dinámicos/App'
+//import App from './Test/App'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 root.render(
   <React.StrictMode>
-    <Class6 />
+    <App />
   </React.StrictMode>
 )
 

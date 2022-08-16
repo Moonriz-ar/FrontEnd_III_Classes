@@ -1,7 +1,9 @@
 import React from 'react'
-import { getFavGames, getGames } from '../Api/api'
-import TitledList from './components/TitledList'
-import './test.css'
+import { getFavGames, getGames } from '../Api/games'
+import { getUsers } from '../Api/users'
+import GameList from './components/GameList'
+import UserList from './components/UserList'
+import './app.css'
 
 interface IProps {
   elementos: Array<string>
@@ -15,6 +17,7 @@ interface IState {
 const Test: React.FunctionComponent = (props) => {
   const favGames = getFavGames()
   const games = getGames()
+  const users = getUsers()
   return (
     <>
       <header>
@@ -22,9 +25,17 @@ const Test: React.FunctionComponent = (props) => {
         Vapor
       </header>
       <div className='page-body'>
-        <TitledList title="Juegos Favoritos" items={favGames} />
-        <hr />
-        <TitledList title="Tu Biblioteca" items={games} />
+        <div className='games-section'>
+          <h2>Juegos Favoritos</h2>
+          <GameList items={favGames} />
+          <hr />
+          <h2>Tu Biblioteca</h2>
+          <GameList items={games} />
+        </div>
+        <div className='users-section'>
+          <h3>Amigos</h3>
+          <UserList items={users} />
+        </div>
       </div>
     </>
   )

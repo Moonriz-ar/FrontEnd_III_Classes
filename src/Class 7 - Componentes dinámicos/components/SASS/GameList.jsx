@@ -1,14 +1,10 @@
 import React from 'react'
-import { GameI } from '../../Api/api'
 import Game from './Game'
+import styles from './gameList.module.scss'
 
-interface IProps {
-  items: Array<GameI>
-}
-
-const List: React.FC<IProps> = (props) => {
+const GameList = (props) => {
   return (
-    <ul>
+    <ul className={styles.list}>
       {props.items.map((item) => (
         <li key={item.id}>
           <Game game={item} />
@@ -18,4 +14,4 @@ const List: React.FC<IProps> = (props) => {
   )
 }
 
-export default List
+export default GameList

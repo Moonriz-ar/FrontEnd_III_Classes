@@ -1,5 +1,5 @@
 import React from 'react'
-import { getFavGames, getGames } from '../Api/api'
+import { getFavGames, getGames } from '../Api/games'
 import Game from './components/Game'
 // import List from './components/List'
 // import Title from './components/Title'

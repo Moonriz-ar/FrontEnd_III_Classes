@@ -1,15 +1,10 @@
 import React from 'react'
-import { GameI } from '../../Api/games'
-import styles from './game.module.css'
+import './game.css'
 
-interface IProps {
-  game: GameI
-}
-
-const Game: React.FC<IProps> = (props) => {
+const Game = (props) => {
   const [playing, setPlaying] = React.useState(false)
   return (
-    <div className={styles.game}>
+    <div className={'game'}>
       <h3 title={props.game.name}>
         {props.game.name}
       </h3>

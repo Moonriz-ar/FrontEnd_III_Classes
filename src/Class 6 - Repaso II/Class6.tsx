@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react'
-import { getFavGames, getGames } from '../Api/api'
+import { getFavGames, getGames } from '../Api/games'
 import Game from './components/Game'
 import { ListWithChildren, ListWithProps } from './components/List'
 // import List from './components/List'

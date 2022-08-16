@@ -1,5 +1,5 @@
 import React from 'react'
-import { GameI } from '../../Api/api'
+import { GameI } from '../../Api/games'
 
 interface IProps {
   game: GameI
