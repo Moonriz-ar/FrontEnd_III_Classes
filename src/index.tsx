@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './Class 8 - Estados con class/App'
+import App from './Class 10 - Ciclo de vida/App'
+//import App from './Class 8 - Estados con class/App'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
 //import App from './Test/App'

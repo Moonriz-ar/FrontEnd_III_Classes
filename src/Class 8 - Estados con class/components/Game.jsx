@@ -29,7 +29,6 @@ class Game extends React.Component {
   }
 
   toggleJugar() {
-    console.log(this)
     this.setState({ playing: !this.state.playing })
   }
 

@@ -1,31 +1,25 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
+import Button from './Button'
 
-class Timer extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      time: 0
-    }
-    this.tick = this.tick.bind(this)
-  }
-  tick() {
-    this.setState({
-      time: this.state.time + 1
-    })
-  }
-  
-  componentDidMount() {
-    this.interval = setInterval(this.tick, 1000)  
-  }
-  componentWillUnmount() {
-    clearInterval(this.interval)
-  }
-  render() {
-    
-    return (
-      <div>{this.state.time}</div>
-    )
-  }
+const Timer = (props) => {
+  const [time, setTime] = React.useState(0)
+
+  const incrementarSegundos = useCallback(() => {
+    console.log(time)
+    setTime(time + 1)
+  }, [time])
+
+  useEffect(() => {
+    const interval = setInterval(incrementarSegundos, 1000)
+    return () => clearInterval(interval)
+  } , [incrementarSegundos])
+
+  return (
+    <div>
+      <div>{time}</div>
+      <Button onClick={incrementarSegundos}>TICK</Button>
+    </div>
+  )
 }
 
 export default Timer

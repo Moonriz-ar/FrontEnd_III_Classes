@@ -17,38 +17,27 @@ const StyledGame = styled.div`
   }
 `
 
-class Game extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      playing: false
-    }
-    this.tooglePlaying = this.tooglePlaying.bind(this)
-  }
-  tooglePlaying() {
-    console.log(this)
-    this.setState({
-      playing: !this.state.playing
-    })
+const Game = (props) =>{
+  const [playing, setPlaying] = React.useState(false)
+  const tooglePlaying = () => {
+    setPlaying(!playing)
   }
 
-  render() {
-    return (
-      <StyledGame>
-        <h3 title={this.props.game.name}>
-          {this.props.game.name}
-        </h3>
-        <img src={this.props.game.image} alt={this.props.game.name} />
-        <Button
-          playing={this.state.playing}
-          onClick={this.tooglePlaying}
-        >
-          {this.state.playing ? 'Parar' : 'Jugar'}
-        </Button>
-        {this.state.playing ? <Timer /> : undefined}
-      </StyledGame>
-    )
-  }
+  return (
+    <StyledGame>
+      <h3 title={props.game.name}>
+        {props.game.name}
+      </h3>
+      <img src={props.game.image} alt={props.game.name} />
+      <Button
+        playing={playing}
+        onClick={tooglePlaying}
+      >
+        {playing ? 'Parar' : 'Jugar'}
+      </Button>
+      {playing ? <Timer /> : undefined}
+    </StyledGame>
+  )
 }
 
 export default Game

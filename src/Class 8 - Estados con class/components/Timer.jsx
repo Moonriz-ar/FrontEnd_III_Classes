@@ -20,7 +20,6 @@ class Timer extends React.Component {
   }
 
   incrementarSegundos() {
-    console.log('aqui')
     this.setState({
       seconds: this.state.seconds + 1,
     })

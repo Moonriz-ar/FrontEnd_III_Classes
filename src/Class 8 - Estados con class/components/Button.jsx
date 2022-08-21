@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 const Button = styled.button`
   background-color: green;
@@ -14,7 +14,7 @@ const Button = styled.button`
     background-color: lime;
   }
 
-  ${(props) => props.playing ? `
+  ${(props) => props.playing ? css`
     background-color: red;
     &:hover {
       background-color: orange;
