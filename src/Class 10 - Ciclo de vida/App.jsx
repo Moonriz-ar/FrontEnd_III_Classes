@@ -1,6 +1,6 @@
 import React from 'react'
-import './app.css'
-import NameFC from './NameFC'
+import ColorFC from './ColorFC'
+import ColorClass from './ColorClass'
 import GameFc from './GameFC'
 
 const games = [{
@@ -24,29 +24,26 @@ const games = [{
 const colors = ["RED", "BLUE", "YELLOW", "GREEN", "ORANGE", "MAGENTA", "BROWN", "LIME"]
 
 const App = () => {
-  const [items, setItems] = React.useState(games)
-  const [itemComprado, setItemComprado] = React.useState(null)
+  const [items, setItems] = React.useState(colors)
+  const [show, setShow] = React.useState(false)
 
   const shuffle = () => {
     setItems(items.slice().sort(() => 0.5 - Math.random()));
   };
 
-  const onComprar = (game) => {
-    setItemComprado(game)
+  const handleShow = () => {
+    setShow(!show)
   }
 
   return (
     <div className='container'>
       {/* {items.map((item, index) => {
-        return <NameFC key={index}>{`${item} ${index}`}</NameFC>
+        return <ColorFC key={index}>{`${item} ${index}`}</ColorFC>
       })} */}
-      {items.map((item, index) => {
-        //console.log(item.name)
-        return <GameFc key={item.id + index} game={item} onComprar={() => onComprar(item)} />
-      })}
-      <button onClick={shuffle}>Shuffle</button>
+      {show ? <ColorFC>{items[0]}</ColorFC> : undefined}
 
-      {itemComprado && <div>{itemComprado.name}</div>}
+      <button onClick={handleShow}>{show ? 'hide' : 'Show'}</button>
+      <button onClick={shuffle}>Shuffle</button>
     </div>
   )
 }

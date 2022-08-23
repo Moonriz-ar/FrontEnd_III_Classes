@@ -3,7 +3,6 @@ import { getFavGames, getGames } from '../Api/games'
 import { getUsers } from '../Api/users'
 import GameList from './components/GameList'
 import UserList from './components/UserList'
-import './app.css'
 
 const App = (props) => {
   const favGames = getFavGames()

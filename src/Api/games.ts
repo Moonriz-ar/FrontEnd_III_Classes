@@ -1,3 +1,6 @@
+import { useMemo, useState } from "react";
+import { autoId, filter, sort } from "./utils";
+
 export enum GameTag {
   Action = 'Action',
   Board = 'Board',
@@ -50,12 +53,12 @@ export interface GameI {
   tags: Array<GameTag>
   state: GameState
   end?: string
-  hours?: number
+  price?: number
   achievements?: [number, number]
   score?: ScoreI
 }
 
-const games: GameI[] = [
+const gameList: GameI[] = [
   {
     id: 'O7JmdrggQw57',
     name: 'Stray',
@@ -63,7 +66,7 @@ const games: GameI[] = [
     tags: [GameTag.Exploration],
     state: GameState.Playing,
     end: '2022-07-23T22:55:02.951Z',
-    hours: 5.4,
+    price: 5.4,
     achievements: [6, 24],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=1',
@@ -75,7 +78,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike],
     state: GameState.Playing,
     end: '2022-07-22T03:00:00.000Z',
-    hours: 489,
+    price: 489,
     achievements: [590, 637],
     score: {
       controls: 7,
@@ -102,7 +105,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Metroidvania],
     state: GameState.Playing,
     end: '2022-07-10T03:00:00.000Z',
-    hours: 4.7,
+    price: 4.7,
     achievements: [11, 40],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=3',
@@ -114,7 +117,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Metroidvania],
     state: GameState.Won,
     end: '2022-07-03T03:00:00.000Z',
-    hours: 7.9,
+    price: 7.9,
     achievements: [8, 46],
     score: {
       music: 4,
@@ -136,7 +139,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Metroidvania],
     state: GameState.Completed,
     end: '2022-07-02T03:00:00.000Z',
-    hours: 11.1,
+    price: 11.1,
     achievements: [28, 44],
     score: {
       lore: 6,
@@ -158,7 +161,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Banned,
     end: '2022-06-17T03:00:00.000Z',
-    hours: 1,
+    price: 1,
     achievements: [0, 38],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=6',
@@ -170,7 +173,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Won,
     end: '2022-06-13T03:00:00.000Z',
-    hours: 6,
+    price: 6,
     achievements: [8, 26],
     score: {
       lore: 3,
@@ -192,7 +195,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Banned,
     end: '2022-06-08T03:00:00.000Z',
-    hours: 0.5,
+    price: 0.5,
     achievements: [1, 38],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=8',
@@ -204,7 +207,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Banned,
     end: '2022-06-07T03:00:00.000Z',
-    hours: 0.5,
+    price: 0.5,
     achievements: [5, 53],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=9',
@@ -216,7 +219,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike],
     state: GameState.Dropped,
     end: '2022-05-14T03:00:00.000Z',
-    hours: 84.5,
+    price: 84.5,
     achievements: [19, 54],
     score: {
       finalMark: 9,
@@ -238,7 +241,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Won,
     end: '2022-05-08T03:00:00.000Z',
-    hours: 0.9,
+    price: 0.9,
     achievements: [111, 129],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=11',
@@ -250,7 +253,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Puzzles],
     state: GameState.Banned,
     end: '2022-04-22T03:00:00.000Z',
-    hours: 1.89,
+    price: 1.89,
     achievements: [2, 26],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=12',
@@ -262,7 +265,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Cooperative, GameTag.Puzzles],
     state: GameState.Won,
     end: '2022-03-05T03:00:00.000Z',
-    hours: 25.1,
+    price: 25.1,
     achievements: [12, 20],
     score: {
       music: 7,
@@ -284,7 +287,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Collectathon],
     state: GameState.Completed,
     end: '2022-01-31T03:00:00.000Z',
-    hours: 15.8,
+    price: 15.8,
     achievements: [16, 46],
     score: {
       finalMark: 7,
@@ -306,7 +309,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Banned,
     end: '2022-01-31T03:00:00.000Z',
-    hours: 0.5,
+    price: 0.5,
     achievements: [1, 37],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=15',
@@ -318,7 +321,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Dropped,
     end: '2022-01-29T03:00:00.000Z',
-    hours: 2.4,
+    price: 2.4,
     achievements: [10, 85],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=16',
@@ -330,7 +333,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Completed,
     end: '2022-01-27T03:00:00.000Z',
-    hours: 126,
+    price: 126,
     achievements: [31, 36],
     score: {
       mechanics: 10,
@@ -357,7 +360,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Dropped,
     end: '2022-01-15T03:00:00.000Z',
-    hours: 4.4,
+    price: 4.4,
     achievements: undefined,
     score: undefined,
     image: 'http://placekitten.com/200/200?image=2',
@@ -369,7 +372,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.TowerDefense],
     state: GameState.Dropped,
     end: '2022-01-15T03:00:00.000Z',
-    hours: 2.1,
+    price: 2.1,
     achievements: [0, 33],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=3',
@@ -381,7 +384,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Action],
     state: GameState.Won,
     end: '2022-01-09T03:00:00.000Z',
-    hours: 11.3,
+    price: 11.3,
     achievements: [14, 20],
     score: {
       mechanics: 6,
@@ -403,7 +406,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Won,
     end: '2022-01-08T03:00:00.000Z',
-    hours: 2.8,
+    price: 2.8,
     achievements: [7, 20],
     score: {
       extra: undefined,
@@ -425,7 +428,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Precision],
     state: GameState.Won,
     end: '2022-01-07T03:00:00.000Z',
-    hours: 1.3,
+    price: 1.3,
     achievements: [14, 28],
     score: {
       bosses: 2,
@@ -447,7 +450,7 @@ const games: GameI[] = [
     tags: [GameTag.MuchoTexto],
     state: GameState.Dropped,
     end: '2022-01-05T03:00:00.000Z',
-    hours: 0.5,
+    price: 0.5,
     achievements: [0, 30],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=7',
@@ -459,7 +462,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Won,
     end: '2022-01-04T03:00:00.000Z',
-    hours: 3,
+    price: 3,
     achievements: [10, 18],
     score: {
       extra: undefined,
@@ -481,7 +484,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Dropped,
     end: '2022-01-02T03:00:00.000Z',
-    hours: 1.2,
+    price: 1.2,
     achievements: undefined,
     score: {
       graphics: 1,
@@ -503,7 +506,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Won,
     end: '2022-01-01T03:00:00.000Z',
-    hours: 2.3,
+    price: 2.3,
     achievements: [11, 17],
     score: {
       music: 4,
@@ -525,7 +528,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Banned,
     end: '2021-12-31T03:00:00.000Z',
-    hours: 2.1,
+    price: 2.1,
     achievements: [9, 35],
     score: {
       graphics: 4,
@@ -547,7 +550,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Won,
     end: '2021-12-28T03:00:00.000Z',
-    hours: 4.5,
+    price: 4.5,
     achievements: [33, 60],
     score: {
       content: 9,
@@ -569,7 +572,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Won,
     end: '2021-12-27T03:00:00.000Z',
-    hours: 1.3,
+    price: 1.3,
     achievements: [13, 35],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=13',
@@ -581,7 +584,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Completed,
     end: '2021-12-26T03:00:00.000Z',
-    hours: 6.2,
+    price: 6.2,
     achievements: [8, 13],
     score: {
       mechanics: 5,
@@ -603,7 +606,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Banned,
     end: '2021-12-23T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: {
       controls: 2,
@@ -625,7 +628,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Won,
     end: '2021-12-23T03:00:00.000Z',
-    hours: 2.8,
+    price: 2.8,
     achievements: [7, 12],
     score: {
       mechanics: 4,
@@ -647,7 +650,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Achievements,
     end: '2021-12-21T03:00:00.000Z',
-    hours: 2.7,
+    price: 2.7,
     achievements: [13, 13],
     score: {
       controls: 9,
@@ -669,7 +672,7 @@ const games: GameI[] = [
     tags: [GameTag.Collectathon, GameTag.Platformer],
     state: GameState.Completed,
     end: '2021-12-19T03:00:00.000Z',
-    hours: 15.8,
+    price: 15.8,
     achievements: [15, 30],
     score: {
       graphics: 5,
@@ -691,7 +694,7 @@ const games: GameI[] = [
     tags: [GameTag.MuchoTexto],
     state: GameState.Achievements,
     end: '2021-12-17T03:00:00.000Z',
-    hours: 1.3,
+    price: 1.3,
     achievements: [5, 5],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=3',
@@ -703,7 +706,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2021-12-11T03:00:00.000Z',
-    hours: 0.5,
+    price: 0.5,
     achievements: [7, 20],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=4',
@@ -715,7 +718,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike, GameTag.Platformer],
     state: GameState.Dropped,
     end: '2021-12-11T03:00:00.000Z',
-    hours: 3.8,
+    price: 3.8,
     achievements: [5, 35],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=5',
@@ -727,7 +730,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Precision],
     state: GameState.Achievements,
     end: '2021-12-11T03:00:00.000Z',
-    hours: 1.5,
+    price: 1.5,
     achievements: [20, 20],
     score: {
       extra: [{ info: 'Have to dye on purpose to get achievements', bias: -1 }],
@@ -749,7 +752,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Dropped,
     end: '2021-12-10T03:00:00.000Z',
-    hours: 1,
+    price: 1,
     achievements: [2, 24],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=7',
@@ -761,7 +764,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Won,
     end: '2021-12-10T03:00:00.000Z',
-    hours: 12.4,
+    price: 12.4,
     achievements: [26, 34],
     score: {
       finalMark: 7,
@@ -783,7 +786,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Achievements,
     end: '2021-12-08T03:00:00.000Z',
-    hours: 14.6,
+    price: 14.6,
     achievements: [24, 24],
     score: {
       lore: 4,
@@ -805,7 +808,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Precision],
     state: GameState.Won,
     end: '2021-11-30T03:00:00.000Z',
-    hours: 0.9,
+    price: 0.9,
     achievements: undefined,
     score: {
       content: 2,
@@ -827,7 +830,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Dropped,
     end: '2021-11-30T03:00:00.000Z',
-    hours: 1,
+    price: 1,
     achievements: [1, 41],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=11',
@@ -839,7 +842,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Puzzles],
     state: GameState.Achievements,
     end: '2021-11-28T03:00:00.000Z',
-    hours: 6.8,
+    price: 6.8,
     achievements: [36, 36],
     score: {
       extra: undefined,
@@ -861,7 +864,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Banned,
     end: '2021-11-27T03:00:00.000Z',
-    hours: 1,
+    price: 1,
     achievements: undefined,
     score: undefined,
     image: 'http://placekitten.com/200/200?image=13',
@@ -873,7 +876,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Achievements,
     end: '2021-11-27T03:00:00.000Z',
-    hours: 26.8,
+    price: 26.8,
     achievements: [30, 30],
     score: {
       lore: 6,
@@ -899,7 +902,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Achievements,
     end: '2021-11-27T03:00:00.000Z',
-    hours: 1.8,
+    price: 1.8,
     achievements: [9, 9],
     score: {
       music: undefined,
@@ -921,7 +924,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Completed,
     end: '2021-11-21T03:00:00.000Z',
-    hours: 9.2,
+    price: 9.2,
     achievements: [15, 32],
     score: {
       graphics: 6,
@@ -943,7 +946,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Banned,
     end: '2021-11-21T03:00:00.000Z',
-    hours: 1.3,
+    price: 1.3,
     achievements: [4, 14],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=1',
@@ -955,7 +958,7 @@ const games: GameI[] = [
     tags: [GameTag.Action, GameTag.Platformer],
     state: GameState.Banned,
     end: '2021-11-16T03:00:00.000Z',
-    hours: 0.1,
+    price: 0.1,
     achievements: [4, 38],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=2',
@@ -967,7 +970,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG, GameTag.Action],
     state: GameState.Completed,
     end: '2021-11-16T03:00:00.000Z',
-    hours: 9.7,
+    price: 9.7,
     achievements: [6, 9],
     score: {
       mechanics: 4,
@@ -989,7 +992,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Collectathon],
     state: GameState.Achievements,
     end: '2021-11-15T03:00:00.000Z',
-    hours: 9.5,
+    price: 9.5,
     achievements: [25, 25],
     score: {
       lore: 6,
@@ -1011,7 +1014,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2021-11-13T03:00:00.000Z',
-    hours: 78.7,
+    price: 78.7,
     achievements: [17, 19],
     score: {
       mechanics: 6,
@@ -1033,7 +1036,7 @@ const games: GameI[] = [
     tags: [GameTag.Exploration],
     state: GameState.Won,
     end: '2021-11-07T03:00:00.000Z',
-    hours: 10.4,
+    price: 10.4,
     achievements: undefined,
     score: {
       lore: 6,
@@ -1064,7 +1067,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG, GameTag.Action],
     state: GameState.Completed,
     end: '2021-10-30T03:00:00.000Z',
-    hours: 7.6,
+    price: 7.6,
     achievements: [5, 12],
     score: {
       music: undefined,
@@ -1086,7 +1089,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2021-10-27T03:00:00.000Z',
-    hours: 1.8,
+    price: 1.8,
     achievements: [3, 20],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=8',
@@ -1098,7 +1101,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Completed,
     end: '2021-10-11T03:00:00.000Z',
-    hours: 7.4,
+    price: 7.4,
     achievements: [21, 33],
     score: {
       extra: undefined,
@@ -1120,7 +1123,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG],
     state: GameState.Won,
     end: '2021-10-08T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: undefined,
     image: 'http://placekitten.com/200/200?image=10',
@@ -1132,7 +1135,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Collectathon],
     state: GameState.Achievements,
     end: '2021-09-30T03:00:00.000Z',
-    hours: 4.3,
+    price: 4.3,
     achievements: [20, 20],
     score: {
       lore: 2,
@@ -1154,7 +1157,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Puzzles],
     state: GameState.Completed,
     end: '2021-09-26T03:00:00.000Z',
-    hours: 6.3,
+    price: 6.3,
     achievements: [14, 50],
     score: {
       controls: 8,
@@ -1181,7 +1184,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike],
     state: GameState.Dropped,
     end: '2021-09-23T03:00:00.000Z',
-    hours: 2.8,
+    price: 2.8,
     achievements: [13, 42],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=13',
@@ -1193,7 +1196,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Action],
     state: GameState.Dropped,
     end: '2021-09-23T03:00:00.000Z',
-    hours: 0.6,
+    price: 0.6,
     achievements: [1, 24],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=14',
@@ -1205,7 +1208,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike, GameTag.Action],
     state: GameState.Achievements,
     end: '2021-09-22T03:00:00.000Z',
-    hours: 88.9,
+    price: 88.9,
     achievements: [49, 49],
     score: {
       mechanics: 8,
@@ -1227,7 +1230,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2021-08-20T03:00:00.000Z',
-    hours: 1.8,
+    price: 1.8,
     achievements: [14, 43],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=16',
@@ -1239,7 +1242,7 @@ const games: GameI[] = [
     tags: [GameTag.MuchoTexto],
     state: GameState.Completed,
     end: '2021-08-07T03:00:00.000Z',
-    hours: 15.8,
+    price: 15.8,
     achievements: undefined,
     score: {
       controls: 6,
@@ -1261,7 +1264,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2021-07-30T03:00:00.000Z',
-    hours: 0.8,
+    price: 0.8,
     achievements: [3, 16],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=2',
@@ -1273,7 +1276,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Completed,
     end: '2021-07-26T03:00:00.000Z',
-    hours: 13.3,
+    price: 13.3,
     achievements: [39, 49],
     score: {
       controls: 4,
@@ -1295,7 +1298,7 @@ const games: GameI[] = [
     tags: [GameTag.Action, GameTag.Platformer],
     state: GameState.Dropped,
     end: '2021-07-14T03:00:00.000Z',
-    hours: 0.6,
+    price: 0.6,
     achievements: [2, 31],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=4',
@@ -1307,7 +1310,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike],
     state: GameState.Dropped,
     end: '2021-07-13T03:00:00.000Z',
-    hours: 1.5,
+    price: 1.5,
     achievements: [2, 60],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=5',
@@ -1319,7 +1322,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Won,
     end: '2021-07-13T03:00:00.000Z',
-    hours: 3.4,
+    price: 3.4,
     achievements: [5, 7],
     score: {
       graphics: 10,
@@ -1341,7 +1344,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2021-07-12T03:00:00.000Z',
-    hours: 2.3,
+    price: 2.3,
     achievements: undefined,
     score: undefined,
     image: 'http://placekitten.com/200/200?image=7',
@@ -1353,7 +1356,7 @@ const games: GameI[] = [
     tags: [GameTag.Exploration, GameTag.Horror],
     state: GameState.Banned,
     end: '2021-07-10T03:00:00.000Z',
-    hours: 0.7,
+    price: 0.7,
     achievements: [5, 29],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=8',
@@ -1365,7 +1368,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG, GameTag.TurnBased],
     state: GameState.Completed,
     end: '2021-07-10T03:00:00.000Z',
-    hours: 46.2,
+    price: 46.2,
     achievements: [24, 30],
     score: {
       graphics: 10,
@@ -1387,7 +1390,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2021-06-27T03:00:00.000Z',
-    hours: 3.9,
+    price: 3.9,
     achievements: [6, 27],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=10',
@@ -1399,7 +1402,7 @@ const games: GameI[] = [
     tags: [GameTag.MuchoTexto],
     state: GameState.Dropped,
     end: '2021-06-24T03:00:00.000Z',
-    hours: 1.2,
+    price: 1.2,
     achievements: undefined,
     score: undefined,
     image: 'http://placekitten.com/200/200?image=11',
@@ -1411,7 +1414,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Achievements,
     end: '2021-06-23T03:00:00.000Z',
-    hours: 18.8,
+    price: 18.8,
     achievements: [41, 41],
     score: {
       extra: undefined,
@@ -1433,7 +1436,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Completed,
     end: '2021-06-19T03:00:00.000Z',
-    hours: 20.8,
+    price: 20.8,
     achievements: [12, 44],
     score: {
       mechanics: 10,
@@ -1455,7 +1458,7 @@ const games: GameI[] = [
     tags: [GameTag.Collectathon, GameTag.Platformer],
     state: GameState.Dropped,
     end: '2021-04-01T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: {
       bosses: 8,
@@ -1477,7 +1480,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Dropped,
     end: '2021-01-15T03:00:00.000Z',
-    hours: 1.2,
+    price: 1.2,
     achievements: [0, 9],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=15',
@@ -1489,7 +1492,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Dropped,
     end: '2021-01-01T03:00:00.000Z',
-    hours: 3.6,
+    price: 3.6,
     achievements: [7, 49],
     score: {
       bosses: 6,
@@ -1511,7 +1514,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Won,
     end: '2020-12-29T03:00:00.000Z',
-    hours: 7.5,
+    price: 7.5,
     achievements: [17, 30],
     score: {
       mechanics: 6,
@@ -1533,7 +1536,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Dropped,
     end: '2020-12-20T03:00:00.000Z',
-    hours: 3,
+    price: 3,
     achievements: [9, 17],
     score: {
       controls: 10,
@@ -1555,7 +1558,7 @@ const games: GameI[] = [
     tags: [GameTag.Action],
     state: GameState.Dropped,
     end: '2020-12-19T03:00:00.000Z',
-    hours: 5.6,
+    price: 5.6,
     achievements: [35, 63],
     score: {
       bosses: undefined,
@@ -1577,7 +1580,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Completed,
     end: '2020-12-13T03:00:00.000Z',
-    hours: 18.6,
+    price: 18.6,
     achievements: [10, 11],
     score: {
       mechanics: 8,
@@ -1600,7 +1603,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Completed,
     end: '2020-12-12T03:00:00.000Z',
-    hours: 4.7,
+    price: 4.7,
     achievements: [25, 47],
     score: {
       controls: 8,
@@ -1622,7 +1625,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Banned,
     end: '2020-12-08T03:00:00.000Z',
-    hours: 0.5,
+    price: 0.5,
     achievements: [2, 33],
     score: {
       mechanics: 4,
@@ -1644,7 +1647,7 @@ const games: GameI[] = [
     tags: [GameTag.Action],
     state: GameState.Won,
     end: '2020-12-07T03:00:00.000Z',
-    hours: 4,
+    price: 4,
     achievements: [3, 22],
     score: {
       graphics: undefined,
@@ -1666,7 +1669,7 @@ const games: GameI[] = [
     tags: [GameTag.Collectathon, GameTag.Platformer],
     state: GameState.Dropped,
     end: '2020-12-06T03:00:00.000Z',
-    hours: 3.5,
+    price: 3.5,
     achievements: [2, 37],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=8',
@@ -1678,7 +1681,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike],
     state: GameState.Dropped,
     end: '2020-12-05T03:00:00.000Z',
-    hours: 4.5,
+    price: 4.5,
     achievements: [6, 19],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=9',
@@ -1690,7 +1693,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2020-11-22T03:00:00.000Z',
-    hours: 1.8,
+    price: 1.8,
     achievements: [3, 32],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=10',
@@ -1702,7 +1705,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Won,
     end: '2020-11-22T03:00:00.000Z',
-    hours: 41.1,
+    price: 41.1,
     achievements: [45, 63],
     score: {
       mechanics: 8,
@@ -1724,7 +1727,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Won,
     end: '2020-11-15T03:00:00.000Z',
-    hours: 2,
+    price: 2,
     achievements: [0, 1],
     score: {
       finalMark: 3,
@@ -1746,7 +1749,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Won,
     end: '2020-11-02T03:00:00.000Z',
-    hours: 7.8,
+    price: 7.8,
     achievements: [12, 23],
     score: {
       content: 6,
@@ -1768,7 +1771,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Won,
     end: '2020-10-29T03:00:00.000Z',
-    hours: 14.3,
+    price: 14.3,
     achievements: [18, 37],
     score: {
       finalMark: 5,
@@ -1794,7 +1797,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike],
     state: GameState.Banned,
     end: '2020-10-28T03:00:00.000Z',
-    hours: 0.3,
+    price: 0.3,
     achievements: [0, 16],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=15',
@@ -1806,7 +1809,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Achievements,
     end: '2020-10-26T03:00:00.000Z',
-    hours: 41.3,
+    price: 41.3,
     achievements: [32, 32],
     score: {
       controls: 10,
@@ -1829,7 +1832,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Won,
     end: '2020-10-09T03:00:00.000Z',
-    hours: 5,
+    price: 5,
     achievements: [10, 15],
     score: {
       extra: undefined,
@@ -1851,7 +1854,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer, GameTag.Collectathon],
     state: GameState.Completed,
     end: '2020-09-21T03:00:00.000Z',
-    hours: 17.7,
+    price: 17.7,
     achievements: undefined,
     score: {
       content: 8,
@@ -1873,7 +1876,7 @@ const games: GameI[] = [
     tags: [GameTag.Collectathon, GameTag.Platformer],
     state: GameState.Completed,
     end: '2020-09-18T03:00:00.000Z',
-    hours: 16.6,
+    price: 16.6,
     achievements: undefined,
     score: {
       controls: 10,
@@ -1895,7 +1898,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Won,
     end: '2020-09-17T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: {
       lore: 5,
@@ -1917,7 +1920,7 @@ const games: GameI[] = [
     tags: [GameTag.Collectathon, GameTag.Platformer],
     state: GameState.Completed,
     end: '2020-08-20T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: {
       finalMark: 8,
@@ -1939,7 +1942,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG, GameTag.TowerDefense],
     state: GameState.Won,
     end: '2020-08-08T03:00:00.000Z',
-    hours: 332.3,
+    price: 332.3,
     achievements: [55, 118],
     score: {
       mechanics: 8,
@@ -1961,7 +1964,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Dropped,
     end: '2020-08-07T03:00:00.000Z',
-    hours: 3,
+    price: 3,
     achievements: [14, 87],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=7',
@@ -1973,7 +1976,7 @@ const games: GameI[] = [
     tags: [GameTag.Collectathon, GameTag.Platformer],
     state: GameState.Completed,
     end: '2020-07-30T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: {
       extra: [{ info: "It's an old game", bias: 0 }],
@@ -1995,7 +1998,7 @@ const games: GameI[] = [
     tags: [GameTag.Action, GameTag.TowerDefense],
     state: GameState.Dropped,
     end: '2020-07-18T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: undefined,
     image: 'http://placekitten.com/200/200?image=9',
@@ -2007,7 +2010,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Horror],
     state: GameState.Won,
     end: '2020-07-15T03:00:00.000Z',
-    hours: 3.6,
+    price: 3.6,
     achievements: [2, 14],
     score: {
       bosses: undefined,
@@ -2029,7 +2032,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Roguelike],
     state: GameState.Banned,
     end: '2020-07-12T03:00:00.000Z',
-    hours: 0.4,
+    price: 0.4,
     achievements: [4, 84],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=11',
@@ -2041,7 +2044,7 @@ const games: GameI[] = [
     tags: [GameTag.Collectathon, GameTag.Platformer],
     state: GameState.Won,
     end: '2020-07-11T03:00:00.000Z',
-    hours: 18,
+    price: 18,
     achievements: [47, 74],
     score: {
       content: 10,
@@ -2063,7 +2066,7 @@ const games: GameI[] = [
     tags: [GameTag.Collectathon, GameTag.Platformer],
     state: GameState.Completed,
     end: '2020-07-10T03:00:00.000Z',
-    hours: 39.8,
+    price: 39.8,
     achievements: [80, 105],
     score: {
       bosses: 8,
@@ -2085,7 +2088,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2020-07-04T03:00:00.000Z',
-    hours: 3.1,
+    price: 3.1,
     achievements: [4, 17],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=14',
@@ -2097,7 +2100,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Won,
     end: '2020-06-18T03:00:00.000Z',
-    hours: 32.2,
+    price: 32.2,
     achievements: [32, 138],
     score: {
       controls: 10,
@@ -2119,7 +2122,7 @@ const games: GameI[] = [
     tags: [GameTag.MuchoTexto, GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2020-06-03T03:00:00.000Z',
-    hours: 34.7,
+    price: 34.7,
     achievements: [11, 38],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=16',
@@ -2131,7 +2134,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG, GameTag.MuchoTexto],
     state: GameState.Dropped,
     end: '2020-05-29T03:00:00.000Z',
-    hours: 12.1,
+    price: 12.1,
     achievements: [1, 27],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=1',
@@ -2143,7 +2146,7 @@ const games: GameI[] = [
     tags: [GameTag.Action],
     state: GameState.Won,
     end: '2020-05-10T03:00:00.000Z',
-    hours: 7.3,
+    price: 7.3,
     achievements: [85, 152],
     score: {
       finalMark: 6,
@@ -2165,7 +2168,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2020-04-04T03:00:00.000Z',
-    hours: 5.3,
+    price: 5.3,
     achievements: [1, 18],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=3',
@@ -2177,7 +2180,7 @@ const games: GameI[] = [
     tags: [GameTag.TowerDefense],
     state: GameState.Won,
     end: '2020-04-04T03:00:00.000Z',
-    hours: 188.4,
+    price: 188.4,
     achievements: [619, 636],
     score: {
       controls: 10,
@@ -2199,7 +2202,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Dropped,
     end: '2020-03-30T03:00:00.000Z',
-    hours: 4.7,
+    price: 4.7,
     achievements: [0, 9],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=5',
@@ -2211,7 +2214,7 @@ const games: GameI[] = [
     tags: [GameTag.MuchoTexto],
     state: GameState.Dropped,
     end: '2020-03-24T03:00:00.000Z',
-    hours: 45.8,
+    price: 45.8,
     achievements: [13, 30],
     score: {
       controls: 7,
@@ -2233,7 +2236,7 @@ const games: GameI[] = [
     tags: [GameTag.TowerDefense],
     state: GameState.Achievements,
     end: '2020-03-11T03:00:00.000Z',
-    hours: 282,
+    price: 282,
     achievements: [419, 419],
     score: {
       content: 8,
@@ -2255,7 +2258,7 @@ const games: GameI[] = [
     tags: [GameTag.MuchoTexto],
     state: GameState.Won,
     end: '2020-03-01T03:00:00.000Z',
-    hours: 13,
+    price: 13,
     achievements: undefined,
     score: {
       extra: undefined,
@@ -2277,7 +2280,7 @@ const games: GameI[] = [
     tags: [GameTag.Action, GameTag.Cooperative],
     state: GameState.Won,
     end: '2020-01-16T03:00:00.000Z',
-    hours: 11.2,
+    price: 11.2,
     achievements: [17, 28],
     score: {
       controls: 8,
@@ -2299,7 +2302,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.MuchoTexto],
     state: GameState.Won,
     end: '2020-01-03T03:00:00.000Z',
-    hours: 11,
+    price: 11,
     achievements: [9, 11],
     score: {
       lore: 10,
@@ -2321,7 +2324,7 @@ const games: GameI[] = [
     tags: [GameTag.Board, GameTag.TowerDefense],
     state: GameState.Achievements,
     end: '2019-12-26T03:00:00.000Z',
-    hours: 16.2,
+    price: 16.2,
     achievements: [14, 14],
     score: {
       music: undefined,
@@ -2343,7 +2346,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Completed,
     end: '2019-12-01T03:00:00.000Z',
-    hours: 21,
+    price: 21,
     achievements: [42, 48],
     score: {
       finalMark: 10,
@@ -2365,7 +2368,7 @@ const games: GameI[] = [
     tags: [GameTag.Cooperative],
     state: GameState.Dropped,
     end: '2019-11-21T03:00:00.000Z',
-    hours: 8.1,
+    price: 8.1,
     achievements: [7, 12],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=13',
@@ -2377,7 +2380,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG, GameTag.Action],
     state: GameState.Completed,
     end: '2019-11-15T03:00:00.000Z',
-    hours: 30,
+    price: 30,
     achievements: [20, 46],
     score: {
       controls: 10,
@@ -2399,7 +2402,7 @@ const games: GameI[] = [
     tags: [GameTag.Rythm, GameTag.Precision],
     state: GameState.Won,
     end: '2019-11-03T03:00:00.000Z',
-    hours: 3.5,
+    price: 3.5,
     achievements: [8, 26],
     score: {
       controls: undefined,
@@ -2421,7 +2424,7 @@ const games: GameI[] = [
     tags: [GameTag.Cooperative, GameTag.Puzzles],
     state: GameState.Achievements,
     end: '2019-10-15T03:00:00.000Z',
-    hours: 16,
+    price: 16,
     achievements: [10, 10],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=16',
@@ -2433,7 +2436,7 @@ const games: GameI[] = [
     tags: [GameTag.Idle],
     state: GameState.Won,
     end: '2019-09-24T03:00:00.000Z',
-    hours: 651.3,
+    price: 651.3,
     achievements: [14, 14],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=1',
@@ -2445,7 +2448,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Banned,
     end: '2019-09-18T03:00:00.000Z',
-    hours: 1.5,
+    price: 1.5,
     achievements: [0, 7],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=2',
@@ -2457,7 +2460,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike],
     state: GameState.Dropped,
     end: '2019-08-29T03:00:00.000Z',
-    hours: 7.5,
+    price: 7.5,
     achievements: [33, 38],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=3',
@@ -2469,7 +2472,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Completed,
     end: '2019-08-18T03:00:00.000Z',
-    hours: 33,
+    price: 33,
     achievements: [28, 35],
     score: {
       content: 10,
@@ -2491,7 +2494,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG, GameTag.Action],
     state: GameState.Won,
     end: '2019-06-23T03:00:00.000Z',
-    hours: 10.6,
+    price: 10.6,
     achievements: [6, 33],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=5',
@@ -2503,7 +2506,7 @@ const games: GameI[] = [
     tags: [GameTag.TowerDefense],
     state: GameState.Won,
     end: '2019-03-02T03:00:00.000Z',
-    hours: 21,
+    price: 21,
     achievements: [13, 21],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=6',
@@ -2515,7 +2518,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision],
     state: GameState.Won,
     end: '2019-02-09T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: [22, 75],
     score: {
       finalMark: 7,
@@ -2537,7 +2540,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Dropped,
     end: '2019-01-04T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: [1, 12],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=8',
@@ -2549,7 +2552,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Won,
     end: '2018-12-24T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: [15, 37],
     score: {
       music: undefined,
@@ -2571,7 +2574,7 @@ const games: GameI[] = [
     tags: [GameTag.PointAndClick],
     state: GameState.Won,
     end: '2018-11-23T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: undefined,
     image: 'http://placekitten.com/200/200?image=10',
@@ -2583,7 +2586,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Won,
     end: '2018-11-16T03:00:00.000Z',
-    hours: 4.2,
+    price: 4.2,
     achievements: [19, 106],
     score: {
       mechanics: 6,
@@ -2605,7 +2608,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Action],
     state: GameState.Won,
     end: '2018-11-14T03:00:00.000Z',
-    hours: 16.6,
+    price: 16.6,
     achievements: [21, 28],
     score: {
       music: 9,
@@ -2627,7 +2630,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Won,
     end: '2018-11-07T03:00:00.000Z',
-    hours: 3.6,
+    price: 3.6,
     achievements: [12, 13],
     score: {
       music: undefined,
@@ -2649,7 +2652,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Completed,
     end: '2018-11-01T03:00:00.000Z',
-    hours: 21.2,
+    price: 21.2,
     achievements: undefined,
     score: {
       extra: [{ info: 'Worst control than original', bias: -1 }],
@@ -2671,7 +2674,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike, GameTag.Rythm],
     state: GameState.Won,
     end: '2018-10-30T03:00:00.000Z',
-    hours: 21.4,
+    price: 21.4,
     achievements: [8, 44],
     score: {
       lore: 2,
@@ -2693,7 +2696,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG, GameTag.MuchoTexto],
     state: GameState.Completed,
     end: '2018-08-27T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: {
       bosses: 10,
@@ -2715,7 +2718,7 @@ const games: GameI[] = [
     tags: [GameTag.Programing],
     state: GameState.Dropped,
     end: '2018-08-25T03:00:00.000Z',
-    hours: 6.9,
+    price: 6.9,
     achievements: [12, 19],
     score: {
       bosses: undefined,
@@ -2737,7 +2740,7 @@ const games: GameI[] = [
     tags: [GameTag.RPG],
     state: GameState.Dropped,
     end: '2018-07-21T03:00:00.000Z',
-    hours: 15,
+    price: 15,
     achievements: [0, 65],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=2',
@@ -2749,7 +2752,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2018-07-15T03:00:00.000Z',
-    hours: 6.1,
+    price: 6.1,
     achievements: [15, 29],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=3',
@@ -2761,7 +2764,7 @@ const games: GameI[] = [
     tags: [GameTag.Rythm],
     state: GameState.Achievements,
     end: '2018-06-23T03:00:00.000Z',
-    hours: 24.1,
+    price: 24.1,
     achievements: [26, 26],
     score: {
       controls: 8,
@@ -2788,7 +2791,7 @@ const games: GameI[] = [
     tags: [GameTag.PointAndClick],
     state: GameState.Dropped,
     end: '2018-06-16T03:00:00.000Z',
-    hours: 10.6,
+    price: 10.6,
     achievements: [0, 46],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=5',
@@ -2800,7 +2803,7 @@ const games: GameI[] = [
     tags: [GameTag.Programing, GameTag.Puzzles],
     state: GameState.Achievements,
     end: '2018-04-01T03:00:00.000Z',
-    hours: 11.7,
+    price: 11.7,
     achievements: [16, 16],
     score: {
       finalMark: 6,
@@ -2822,7 +2825,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania],
     state: GameState.Won,
     end: '2018-02-15T03:00:00.000Z',
-    hours: 11.4,
+    price: 11.4,
     achievements: [16, 29],
     score: {
       music: undefined,
@@ -2844,7 +2847,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Won,
     end: '2018-02-04T03:00:00.000Z',
-    hours: 6.8,
+    price: 6.8,
     achievements: [29, 57],
     score: {
       mechanics: 6,
@@ -2866,7 +2869,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Won,
     end: '2017-11-20T03:00:00.000Z',
-    hours: 3.5,
+    price: 3.5,
     achievements: undefined,
     score: {
       music: 2,
@@ -2888,7 +2891,7 @@ const games: GameI[] = [
     tags: [GameTag.Precision, GameTag.Platformer],
     state: GameState.Completed,
     end: '2017-10-22T03:00:00.000Z',
-    hours: 34.8,
+    price: 34.8,
     achievements: [28, 48],
     score: {
       lore: 5,
@@ -2910,7 +2913,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2017-09-26T03:00:00.000Z',
-    hours: 13,
+    price: 13,
     achievements: [22, 38],
     score: {
       content: 8,
@@ -2932,7 +2935,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Won,
     end: '2017-09-06T03:00:00.000Z',
-    hours: 30,
+    price: 30,
     achievements: [14, 18],
     score: {
       lore: 4,
@@ -2954,7 +2957,7 @@ const games: GameI[] = [
     tags: [GameTag.TowerDefense],
     state: GameState.Dropped,
     end: '2017-08-23T03:00:00.000Z',
-    hours: 1,
+    price: 1,
     achievements: [11, 41],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=13',
@@ -2966,7 +2969,7 @@ const games: GameI[] = [
     tags: [GameTag.Programing],
     state: GameState.Dropped,
     end: '2017-08-18T03:00:00.000Z',
-    hours: 8.2,
+    price: 8.2,
     achievements: [5, 11],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=14',
@@ -2978,7 +2981,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Won,
     end: '2017-07-11T03:00:00.000Z',
-    hours: 16.6,
+    price: 16.6,
     achievements: [12, 56],
     score: {
       lore: 5,
@@ -3000,7 +3003,7 @@ const games: GameI[] = [
     tags: [GameTag.Board],
     state: GameState.Dropped,
     end: '2017-02-19T03:00:00.000Z',
-    hours: 69.5,
+    price: 69.5,
     achievements: [12, 20],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=16',
@@ -3012,7 +3015,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2016-12-16T03:00:00.000Z',
-    hours: 2.1,
+    price: 2.1,
     achievements: [28, 88],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=1',
@@ -3024,7 +3027,7 @@ const games: GameI[] = [
     tags: [GameTag.TowerDefense],
     state: GameState.Dropped,
     end: '2016-12-16T03:00:00.000Z',
-    hours: 1,
+    price: 1,
     achievements: [4, 50],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=2',
@@ -3036,7 +3039,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Completed,
     end: '2016-12-05T03:00:00.000Z',
-    hours: 9.4,
+    price: 9.4,
     achievements: [19, 24],
     score: {
       content: 6,
@@ -3058,7 +3061,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2016-11-19T03:00:00.000Z',
-    hours: 30.5,
+    price: 30.5,
     achievements: [1, 2],
     score: {
       bosses: undefined,
@@ -3080,7 +3083,7 @@ const games: GameI[] = [
     tags: [GameTag.Horror, GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Won,
     end: '2016-07-02T03:00:00.000Z',
-    hours: 2.6,
+    price: 2.6,
     achievements: [4, 13],
     score: {
       graphics: 5,
@@ -3102,7 +3105,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Won,
     end: '2016-05-02T03:00:00.000Z',
-    hours: 9.7,
+    price: 9.7,
     achievements: [15, 38],
     score: {
       mechanics: 5,
@@ -3124,7 +3127,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Banned,
     end: '2016-02-29T03:00:00.000Z',
-    hours: 0.7,
+    price: 0.7,
     achievements: [0, 6],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=7',
@@ -3136,7 +3139,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2016-02-24T03:00:00.000Z',
-    hours: 11,
+    price: 11,
     achievements: [17, 29],
     score: {
       bosses: undefined,
@@ -3158,7 +3161,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Dropped,
     end: '2016-02-21T03:00:00.000Z',
-    hours: 2,
+    price: 2,
     achievements: [2, 18],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=9',
@@ -3170,7 +3173,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2016-01-02T03:00:00.000Z',
-    hours: 8,
+    price: 8,
     achievements: [17, 28],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=10',
@@ -3182,7 +3185,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Won,
     end: '2016-01-01T03:00:00.000Z',
-    hours: 1.2,
+    price: 1.2,
     achievements: [4, 12],
     score: {
       content: 5,
@@ -3204,7 +3207,7 @@ const games: GameI[] = [
     tags: [GameTag.Board, GameTag.Roguelike],
     state: GameState.Won,
     end: '2015-12-27T03:00:00.000Z',
-    hours: 19.3,
+    price: 19.3,
     achievements: [22, 30],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=12',
@@ -3216,7 +3219,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2015-12-27T03:00:00.000Z',
-    hours: 3,
+    price: 3,
     achievements: [12, 13],
     score: {
       bosses: undefined,
@@ -3238,7 +3241,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2015-12-03T03:00:00.000Z',
-    hours: 6.8,
+    price: 6.8,
     achievements: [19, 51],
     score: {
       mechanics: 10,
@@ -3260,7 +3263,7 @@ const games: GameI[] = [
     tags: [GameTag.MuchoTexto],
     state: GameState.Won,
     end: '2015-11-08T03:00:00.000Z',
-    hours: 6.4,
+    price: 6.4,
     achievements: [5, 60],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=15',
@@ -3272,7 +3275,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Won,
     end: '2015-09-12T03:00:00.000Z',
-    hours: 9.3,
+    price: 9.3,
     achievements: [8, 25],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=16',
@@ -3284,7 +3287,7 @@ const games: GameI[] = [
     tags: [GameTag.Roguelike],
     state: GameState.Won,
     end: '2014-01-01T03:00:00.000Z',
-    hours: 3.2,
+    price: 3.2,
     achievements: [14, 20],
     score: {
       extra: undefined,
@@ -3306,7 +3309,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2014-01-01T03:00:00.000Z',
-    hours: 7.9,
+    price: 7.9,
     achievements: [12, 20],
     score: {
       lore: 5,
@@ -3328,7 +3331,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Won,
     end: '2013-01-01T03:00:00.000Z',
-    hours: 4.3,
+    price: 4.3,
     achievements: [26, 35],
     score: {
       lore: 5,
@@ -3350,7 +3353,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Completed,
     end: '2013-01-01T03:00:00.000Z',
-    hours: 11.6,
+    price: 11.6,
     achievements: [43, 76],
     score: {
       lore: 10,
@@ -3373,7 +3376,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2013-01-01T03:00:00.000Z',
-    hours: 3.9,
+    price: 3.9,
     achievements: [0, 10],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=5',
@@ -3385,7 +3388,7 @@ const games: GameI[] = [
     tags: [GameTag.Horror, GameTag.Platformer],
     state: GameState.Achievements,
     end: '2013-01-01T03:00:00.000Z',
-    hours: 2.4,
+    price: 2.4,
     achievements: [14, 14],
     score: {
       mechanics: 3,
@@ -3407,7 +3410,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2013-01-01T03:00:00.000Z',
-    hours: 3.6,
+    price: 3.6,
     achievements: undefined,
     score: {
       finalMark: 7,
@@ -3429,7 +3432,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Won,
     end: '2013-01-01T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: [0, 52],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=8',
@@ -3441,7 +3444,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Won,
     end: '2012-01-01T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: {
       content: 8,
@@ -3463,7 +3466,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Won,
     end: '2012-01-01T03:00:00.000Z',
-    hours: 3.6,
+    price: 3.6,
     achievements: [7, 12],
     score: {
       lore: 5,
@@ -3485,7 +3488,7 @@ const games: GameI[] = [
     tags: [GameTag.Platformer],
     state: GameState.Won,
     end: '2012-01-01T03:00:00.000Z',
-    hours: 2.2,
+    price: 2.2,
     achievements: [3, 19],
     score: {
       graphics: 4,
@@ -3507,7 +3510,7 @@ const games: GameI[] = [
     tags: [GameTag.Rythm],
     state: GameState.Won,
     end: '2012-01-01T03:00:00.000Z',
-    hours: undefined,
+    price: undefined,
     achievements: undefined,
     score: undefined,
     image: 'http://placekitten.com/200/200?image=12',
@@ -3519,7 +3522,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Completed,
     end: '2012-01-01T03:00:00.000Z',
-    hours: 8.9,
+    price: 8.9,
     achievements: [21, 30],
     score: {
       mechanics: 8,
@@ -3541,7 +3544,7 @@ const games: GameI[] = [
     tags: [GameTag.Action],
     state: GameState.Won,
     end: '2012-01-01T03:00:00.000Z',
-    hours: 7.5,
+    price: 7.5,
     achievements: [3, 12],
     score: {
       music: 6,
@@ -3563,7 +3566,7 @@ const games: GameI[] = [
     tags: [GameTag.Metroidvania, GameTag.Platformer],
     state: GameState.Completed,
     end: '2012-01-01T03:00:00.000Z',
-    hours: 50,
+    price: 50,
     achievements: undefined,
     score: {
       graphics: 5,
@@ -3585,7 +3588,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles, GameTag.Platformer],
     state: GameState.Won,
     end: '2012-01-01T03:00:00.000Z',
-    hours: 2,
+    price: 2,
     achievements: [3, 32],
     score: undefined,
     image: 'http://placekitten.com/200/200?image=16',
@@ -3597,7 +3600,7 @@ const games: GameI[] = [
     tags: [GameTag.Puzzles],
     state: GameState.Completed,
     end: '2012-01-01T03:00:00.000Z',
-    hours: 6.4,
+    price: 6.4,
     achievements: [8, 15],
     score: {
       graphics: 9,
@@ -3615,9 +3618,93 @@ const games: GameI[] = [
 ]
 
 export function getGames() {
-  return games
+  return gameList
 }
 
 export function getFavGames() {
-  return games.filter((game) => game.fav)
+  return gameList.filter((game) => game.fav)
 }
+
+export interface FiltersI {
+  name?: string;
+  start?: Date;
+  end?: Date;
+  state?: GameState[];
+  tags?: GameTag[];
+}
+
+export interface SorterI {
+  by: "name" | "start" | "end" | "state" | "price" | "achievements" | "score";
+  direction: "asc" | "desc";
+}
+
+export interface variablesI {
+  filters?: FiltersI;
+  skip?: number;
+  first?: number;
+  sorter?: SorterI;
+}
+
+export function useApi(initialVariables?: variablesI) {
+  const [variables, setVariables] = useState<variablesI | undefined>(
+    initialVariables
+  );
+  const [games, setGames] = useState<GameI[]>(gameList);
+  const [loading, setLoading] = useState(false);
+
+  const createGame = async (game: any) => {
+    const id = autoId()
+    setGames([
+      {
+        ...game,
+        id: id,
+        price: Number(game.price),
+        tags: game.genre ? [game.genre] : game.tags,
+        image: `http://placekitten.com/200/200?image=${Math.floor(Math.random() * 16)}`,
+      },
+      ...games,
+      ]);
+    return id;
+  }
+
+  const updateGame = async (gameId: string, game: GameI) => {
+    setGames([...games.filter((g) => g.id !== gameId), { ...game, id: gameId }]);
+  }
+
+  const deleteGame = async (gameId: string) => {
+    setGames([...games.filter((g) => g.id !== gameId)]);
+  }
+
+  const filteredGames = useMemo(() => {
+    if (!games) return undefined;
+    let data = games
+    if (variables) {
+      if (variables.filters) {
+        data = filter(data, variables.filters);
+      }
+      if (variables.sorter) {
+        data = sort(data, variables.sorter);
+      }
+    }
+    
+    data = data?.slice(
+      variables?.skip || 0,
+      variables?.first
+        ? (variables.skip || 0) + variables.first
+        : data.length
+    );
+
+    return data;
+  }, [games, variables]);
+
+  return {
+    games,
+    filteredGames,
+    loading,
+    refetch: setVariables,
+    createGame,
+    updateGame,
+    deleteGame,
+  };
+}
+

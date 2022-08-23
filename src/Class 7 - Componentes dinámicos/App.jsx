@@ -13,7 +13,6 @@ import { getUsers } from '../Api/users'
 
 import GameList from './components/CSSinJS/GameList'
 import UserList from './components/CSSinJS/UserList'
-import './app.css'
 
 const App = (props) => {
   const favGames = getFavGames()
