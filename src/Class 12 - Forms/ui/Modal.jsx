@@ -15,13 +15,7 @@ const StyledModal = styled.div`
   z-index: 1;
 
   .content {
-    background-color: #333;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    min-width: 500px;
   }
 `
 
@@ -29,6 +23,7 @@ const Modal = (props) => {
   return (
     <StyledModal onClick={props.onHide}>
       <Card
+        className='content'
         title={props.title}
         extra={<div onClick={props.onHide}>x</div>}
         footer={props.footer}

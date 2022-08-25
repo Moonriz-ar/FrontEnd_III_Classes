@@ -24,7 +24,7 @@ const StyledCard = styled.div`
 
 const Card = (props) => {
   return (
-    <StyledCard>
+    <StyledCard className={props.className}>
       {props.title ? <div className='title'>{props.title}</div> : undefined}
       <div className="body">{props.children}</div>
       {props.footer ? <div className='footer'>{props.footer}</div> : undefined}
