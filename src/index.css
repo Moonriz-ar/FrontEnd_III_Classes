@@ -89,3 +89,7 @@ h1, h2, h3, h4, h5, h6 {
 .gap-10 {
   gap: 10px;
 }
+
+.justify-between {
+  justify-content: space-between;
+}

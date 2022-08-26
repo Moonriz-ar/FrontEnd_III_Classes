@@ -1,23 +1,28 @@
 import React from 'react'
 import Pedido from './Pedido'
 import { getUniqueId } from './utils'
+import Timer from './Timer'
 
 const menu = ['pizzas', 'hamburguesas', 'ensaladas', 'empanadas']
 
 const App = () => {
-  const [pedidos, setPedidos] = React.useState([])
   /**
+   * -- para los typescripteros --
    * 
-   * {
-   *   id: 
-   *   comida
+   * interface Pedido {
+   *   id: number
+   *   comida: string
    * }
+   * React.useState<Pedido[]>([])
    */
+  const [pedidos, setPedidos] = React.useState([])
+
+
   const handleMakePedido = (item) => {
     const newPedidos = pedidos.slice()
     newPedidos.push({
-      id: getUniqueId(),
-      comida: item
+      id: getUniqueId(), //cualquier otro componente que necesite ids, puede usar este metodo y no colisionan
+      comida: item,
     })
     //the code above is the same as
     //[...pedidos, item, "hamburgesa"]
@@ -29,8 +34,6 @@ const App = () => {
     setPedidos(pedidos.filter((pedido) => pedido.id !== item.id))
   }
 
-  console.log(pedidos)
-
   return (
     <div className='container'>
       <h1>Peditres ya</h1>
@@ -39,10 +42,15 @@ const App = () => {
         <button key={item} onClick={() => handleMakePedido(item)}>Pedir {item}</button>
       ))}
       <hr></hr>
-      {pedidos.length ? pedidos.map((pedido, index) => (
-        <Pedido id={pedido.id} key={pedido.id} onCancel={handleCancelPedido} comida={pedido} />
+      {pedidos.length ? pedidos.map((pedido) => (
+        //la key debe ser unica, pero tambien INTRINSECA al elemento
+        //tienen que representarlo univocamente entre sus hermanos
+        //la key no debe cambiar independientemente de como se altere al arreglo
+        <Pedido key={pedido.id} onCancel={handleCancelPedido} pedido={pedido} />
       )) : 'No hay pedidos'}
       <hr></hr>
+      <div>Hora:</div>
+      <Timer />
     </div>
   )
 }
