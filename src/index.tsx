@@ -8,8 +8,8 @@ import './index.css'
 //import App from './Class 7 - Componentes dinamicos/App'
 //import App from './Class 8 - Estados con class/App'
 //import App from './Class 10 - Ciclo de vida/App'
-import App from './Class 11 - Repaso useEffects/App'
-//import App from './Class 12 - Forms/App'
+//import App from './Class 11 - Repaso useEffects/App'
+import App from './Class 12 - Forms/App'
 //import App from './Test/App'
 
 const root = ReactDOM.createRoot(

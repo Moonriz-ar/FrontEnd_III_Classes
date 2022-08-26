@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Button from '../ui/Button'
-import Timer from './Timer'
+import Card from '../ui/Card'
 
 const StyledGame = styled.div`
   display: flex;
@@ -18,25 +18,18 @@ const StyledGame = styled.div`
 `
 
 const Game = (props) => {
-  const [playing, setPlaying] = React.useState(false)
-
-  const toggleJugar = () => {
-    setPlaying(!playing)
-  }
-
   return (
-    <StyledGame>
-      <h3 title={props.game.name}>
-        {props.game.name}
-      </h3>
-      <img src={props.game.image} alt={props.game.name} />
+    <Card
+      title={props.game.name}
+      footer={
+        <Button styleType='primary' onClick={props.onEdit}>
+          Editar
+        </Button>
+      }
+    >
+      <img width="100%" src={props.game.image} alt={props.game.name} />
       <div>$USD {props.game.price?.toFixed(2)}</div>
-      <div>{props.game.tags?.join(', ')}</div>
-      {/* <Button styleType={playing ? 'danger' : 'primary'} onClick={toggleJugar}>
-        {playing ? 'Parar' : 'Jugar'}
-      </Button>
-      {playing ? <Timer /> : undefined} */}
-    </StyledGame>
+    </Card>
   )
 }
 

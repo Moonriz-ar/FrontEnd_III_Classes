@@ -16,9 +16,14 @@ const StyledCard = styled.div`
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border-bottom: 1px solid white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   > .footer {
     border-top: 1px solid white;
+    display: flex;
+    justify-content: flex-end;
   }
 `
 
