@@ -64,8 +64,11 @@ hr {
   border-left: 1px solid #666;
 }
 
+.games-section{
+  width: 80%;
+}
+
 .games-section, .users-section {
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
