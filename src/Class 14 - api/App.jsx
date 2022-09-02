@@ -1,5 +1,4 @@
 import React from 'react'
-import Login from './components/Login'
 import UserList from './components/UserList'
 import { useUsersApi } from './api/usersApi'
 
@@ -27,16 +26,6 @@ const App = () => {
       <button onClick={api.getDataWithThen}>getData Then</button>
       <button onClick={api.getDataWithAsync}>getData Async</button>
       {api.loading ? 'Loading...' : 'Ready'}
-      {/* {userData ? (
-        <div>
-          <div>
-            Bienvenidoa {userData.firstName} {userData.lastName}
-          </div>
-          <button onClick={logOut}>Log out</button>
-        </div>
-      ) : (
-        <Login onLogin={login} />
-      )} */}
       <UserList items={api.users} />
     </>
   )

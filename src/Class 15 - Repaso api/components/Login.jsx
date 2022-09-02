@@ -14,8 +14,9 @@ const Login = (props) => {
   }
 
   const onSubmit = (e) => {
+    console.log(formValues)
     e.preventDefault()
-    props.onLogin(formValues)
+    props.onLogin(formValues.email, formValues.password)
     setFormValues(initialValues)
   }
 
@@ -23,10 +24,10 @@ const Login = (props) => {
     <div>
       <form id='create-form' className='flex gap-10 items-center' onSubmit={onSubmit}>
         <label>
-          Email: <input name='email' type='text' value={formValues.name} onChange={onInputChange} />
+          Email: <input name='email' type='text' value={formValues.email} onChange={onInputChange} />
         </label>
         <label>
-          Pass: <input name='password' type='password' value={formValues.price} onChange={onInputChange} />
+          Pass: <input name='password' type='password' value={formValues.password} onChange={onInputChange} />
         </label>
         <button type='submit'>Login</button>
       </form>
