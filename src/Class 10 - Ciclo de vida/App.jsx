@@ -36,7 +36,7 @@ const App = () => {
   }
 
   return (
-    <div className='container'>
+    <div>
       {/* {items.map((item, index) => {
         return <ColorFC key={index}>{`${item} ${index}`}</ColorFC>
       })} */}

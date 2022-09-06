@@ -1,7 +1,7 @@
 import React from 'react'
 import { GameI } from '../../Api/games'
 import Game from './Game'
-import './List.css'
+import styles from './List.module.css'
 
 type IProps = {
   elements: GameI[]
@@ -9,7 +9,7 @@ type IProps = {
 
 const List: React.FC<IProps> = (props) => {
   return (
-    <ul>
+    <ul className={styles.list}>
       {props.elements.map((element) => (
         <Game key={element.id} game={element} />)
       )}

@@ -702,6 +702,10 @@ export function getFavGames() {
   return gameList.filter((game) => game.fav)
 }
 
+export function getGameById(id: string) {
+  return gameList.find((game) => game.id === id)
+}
+
 export interface FiltersI {
   name?: string
   start?: Date
@@ -722,8 +726,8 @@ export interface variablesI {
   sorter?: SorterI
 }
 
-export function useApi(initialVariables?: variablesI) {
-  const [variables, setVariables] = useState<variablesI | undefined>(initialVariables)
+export function useApi(initialFilter?: string) {
+  const [variables, setVariables] = useState<string | undefined>(initialFilter)
   const [games, setGames] = useState<GameI[]>(gameList)
   const [loading, setLoading] = useState(false)
 
@@ -761,15 +765,10 @@ export function useApi(initialVariables?: variablesI) {
     if (!games) return undefined
     let data = games
     if (variables) {
-      if (variables.filters) {
-        data = filter(data, variables.filters)
-      }
-      if (variables.sorter) {
-        data = sort(data, variables.sorter)
-      }
+      data = data.filter((game) => {
+        return game.tags.includes(variables)
+      })
     }
-
-    data = data?.slice(variables?.skip || 0, variables?.first ? (variables.skip || 0) + variables.first : data.length)
 
     return data
   }, [games, variables])

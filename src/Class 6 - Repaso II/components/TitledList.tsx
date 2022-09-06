@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react'
-import { GameI } from '../Class6'
+import { GameI } from '../App'
 import { ListWithChildren, ListWithProps } from './List'
 import Title from './Title'
 

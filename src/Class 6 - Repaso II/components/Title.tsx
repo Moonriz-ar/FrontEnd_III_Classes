@@ -1,5 +1,4 @@
 import React from 'react'
-import './Title.css'
 
 interface IProps {
   children: React.ReactNode

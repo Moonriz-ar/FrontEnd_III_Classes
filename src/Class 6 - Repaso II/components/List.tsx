@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React from 'react'
-import { GameI } from '../Class6'
+import { GameI } from '../App'
 import Game from './Game'
-import './List.css'
+import styles from './List.module.css'
 
 interface IListWithProps {
   elements: GameI[]
@@ -10,7 +10,7 @@ interface IListWithProps {
 
 export const ListWithProps: React.FC<IListWithProps> = (props) => {
   return (
-    <ul>
+    <ul className={styles.list}>
       {props.elements.map((element) => (
         <Game key={element.id} game={element} />)
       )}
@@ -26,7 +26,7 @@ interface IListWithChildren {
 
 export const ListWithChildren: React.FC<IListWithChildren> = (props) => {
   return (
-    <ul>
+    <ul className={styles.list}>
       {props.children}
     </ul>
   )

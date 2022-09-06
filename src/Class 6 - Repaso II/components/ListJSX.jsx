@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react'
-import { GameI } from '../Class6'
+import { GameI } from '../App'
 import Game from './Game'
 import './List.css'
 

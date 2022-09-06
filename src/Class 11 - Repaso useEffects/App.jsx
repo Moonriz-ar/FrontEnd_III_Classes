@@ -35,7 +35,7 @@ const App = () => {
   }
 
   return (
-    <div className='container'>
+    <div>
       <h1>Peditres ya</h1>
       <hr></hr>
       {menu.map((item) => (

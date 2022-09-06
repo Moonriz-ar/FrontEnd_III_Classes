@@ -1,6 +1,5 @@
 import React from 'react'
-import { GameI } from '../Class6'
-import './Game.css'
+import { GameI } from '../App'
 
 interface IProps {
   game: GameI
@@ -8,8 +7,8 @@ interface IProps {
 
 const Game: React.FC<IProps> = (props) => {
   return (
-    <div className='game'>
-      <div className='title' title={props.game.name}>
+    <div>
+      <div title={props.game.name}>
         {props.game.name}
       </div>
       <img src={props.game.image} alt={props.game.name} />

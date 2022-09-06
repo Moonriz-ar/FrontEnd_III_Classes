@@ -22,7 +22,7 @@ const Easteregg = () => {
         <span>poder tendras (pero ellos seran libres)</span>
       </p>
       <p>
-        <h3>Josue Yrion</h3>
+        <span>Josue Yrion</span>
         <a
           href="https://www.youtube.com/watch?v=po0Sujc_nR4"
           target="_blank"
