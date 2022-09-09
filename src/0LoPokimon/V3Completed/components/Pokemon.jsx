@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import styles from '../styles/Pokemon.module.css'
 import { message } from 'antd'
+import { useParams } from 'react-router-dom'
 
 export default function Pokemon() {
+  const params = useParams()
+
   const [pokemon, setPokemon] = React.useState(null)
   const [loading, setLoading] = React.useState(false)
 
@@ -11,7 +14,11 @@ export default function Pokemon() {
     async function getPokemon() {
       setLoading(true)
       try {
-        const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/001`) /*AQUI VA EL PARAMETRO de la URL*/
+        console.log(params)
+        const { data } = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${params.pokemonId}`
+        ) /*AQUI VA EL PARAMETRO de la URL*/
+        console.log(data)
         setPokemon(data)
       } catch (error) {
         message.error(error.message)
@@ -21,7 +28,9 @@ export default function Pokemon() {
     getPokemon()
   }, [])
 
-  if (!loading) return <p>Cargando datos</p>
+  if (loading) return <p>Cargando datos</p>
+  if (!pokemon) return <p>No hay pokidatos</p>
+  console.log(pokemon)
   return (
     <div className={styles.pokemon}>
       <div className={styles.datos}>
@@ -55,9 +64,13 @@ export default function Pokemon() {
         </div>
       </div>
       <div className={styles.image}>
-        <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+        <img
+          src={pokemon.sprites['versions']['generation-v']['black-white']['animated']['front_default']}
+          alt={pokemon.name}
+        />
         {/* BONUS EXTRA: Hacer que el boton te lleve a otra pagina con todos los moves del pokemon */}
         <button>Moves</button>
+        <a href={`google.com`} target="_blank" rel="noreferrer" >Moves</a>
       </div>
     </div>
   )

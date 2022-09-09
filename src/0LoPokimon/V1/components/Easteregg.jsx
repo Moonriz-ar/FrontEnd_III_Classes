@@ -19,7 +19,7 @@ const Easteregg = () => {
         <span>Poder tendras</span>
         <span>Mientras mas tarjetas tu tienes</span>
         <span>mas poder tendras</span>
-        <span>poder tendras (pero ellos seran libres)</span>
+        <span>poder tendras (pero ellos eran libres)</span>
       </p>
       <p>
         <span>Josue Yrion</span>

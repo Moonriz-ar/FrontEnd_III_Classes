@@ -132,10 +132,6 @@ const MainLayout = () => {
 }
 
 const MainRoutes = () => {
-  React.useEffect(() => {
-    console.log('MainRoutes mounted')
-  }, [])
-
   return (
     <BrowserRouter>
       <Routes>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { getGameById } from '../../Api/games'
 
@@ -56,6 +56,8 @@ export const Cell = styled.div`
 
 const Game = (props) => {
   const params = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  console.log(params, searchParams.get('name'), searchParams.get('edad'))
   const game = getGameById(params.gameId)
   if (!game) {
     return <div>Game not found</div>

@@ -21,7 +21,8 @@ export default function Pokemon() {
     getPokemon()
   }, [])
 
-  if (!loading) return <p>Cargando datos</p>
+  if (loading) return <p>Cargando datos</p>
+  if (!pokemon) return <p>No hay pokidatos</p>
   return (
     <div className={styles.pokemon}>
       <div className={styles.datos}>

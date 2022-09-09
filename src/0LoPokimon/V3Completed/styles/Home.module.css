@@ -15,7 +15,7 @@
 
 .list{
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   border: 3px solid white;
   background-color: lightslategray;
   color: black;
