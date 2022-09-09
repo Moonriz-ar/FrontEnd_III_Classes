@@ -15,16 +15,16 @@ const Wrapper = styled.div`
 `
 
 const GameFilterForm = () => {
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const handleChange = (value) => {
-    setSearchParams({ genre: value })
+    setSearchParams({ genre: value, price: 123 })
   }
 
   return (
     <Wrapper>
       <span>Filter by genre:</span>
       <Select
-        defaultValue={searchParams.get('genre')}
+        defaultValue={searchParams.get("genre")}
         onChange={handleChange}
       >
         <Select.Option value='Roguelike'>Roguelike</Select.Option>

@@ -96,33 +96,16 @@ const MainLayout = () => {
           mode='inline'
           items={routes.map((r) => ({
             key: r.path,
-            label: <Link to={`/${r.path}`}>{r.name}</Link>,
+            label: <Link to={r.path}>{r.name}</Link>,
           }))}
         />
       </Layout.Sider>
       <Layout>
         <Layout.Content className='p-16'>
-        <Routes>
-          {routes.map((r) => (
-            <Route key={r.path} path={`/${r.path}/*`} element={r.component} />
-          ))}
-          <Route path='/*' element={<div>404</div>} />
-        </Routes>
+          <Outlet />
         </Layout.Content>
       </Layout>
     </Layout>
-  )
-}
-
-const MockedClass5 = () => {
-  return (
-    <div>
-      <h1>Class 5</h1>
-      <Routes>
-        <Route path='/' element={<div>index</div>} />
-        <Route path='/asdf' element={<div>asdf</div>} />
-      </Routes>
-    </div>
   )
 }
 
@@ -133,7 +116,14 @@ const MainRoutes = () => {
 
   return (
     <BrowserRouter>
-      <MainLayout />
+      <Routes>
+        <Route path='/' element={<MainLayout />}>
+          {routes.map((r) => (
+            <Route key={r.path} path={`${r.path}/*`} element={r.component} />
+          ))}
+          <Route path={`*`} element={<div>404</div>} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   )
 }

@@ -7,13 +7,10 @@ import { useSearchParams } from 'react-router-dom'
 
 const GameList = (props) => {
   const { filteredGames, refetch } = useApi()
-  let [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   React.useEffect(() => {
-    const genre = searchParams.get('genre')
-    if (genre) {
-      refetch(genre)
-    }
+    refetch(searchParams.get("genre"))
   }, [refetch, searchParams])
 
   return (

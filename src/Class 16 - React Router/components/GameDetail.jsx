@@ -1,7 +1,6 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import Button from '../ui/Button'
 import { getGameById } from '../../Api/games'
 
 export const GameCard = styled.div`
@@ -62,14 +61,7 @@ const Game = (props) => {
     return <div>Game not found</div>
   }
   return (
-    <GameCard
-      title={game.name}
-      footer={
-        <Button styleType='primary'>
-          <Link to={`game/${game.id}`}>Details</Link>
-        </Button>
-      }
-    >
+    <GameCard>
       <Cell>
         <div className='label'>Name</div>
         <div className='value'>{game.name}</div>

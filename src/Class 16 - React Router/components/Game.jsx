@@ -10,7 +10,7 @@ const Game = (props) => {
       title={props.game.name}
       footer={
         <Button styleType='primary'>
-          <Link to={`game/${props.game.id}`}>Details</Link>
+          <Link to={`game/${props.game.id}/detalle`}>Detalle</Link>
         </Button>
       }
     >
