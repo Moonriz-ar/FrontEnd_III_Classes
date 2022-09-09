@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'antd/dist/antd.dark.css';
 import './index.css'
+import './utility.css'
 //import App from './0LoPokimon/components/App'
 //import App from './Class 5 - Componentes/App'
 //import App from './Class 6 - Repaso II/App'

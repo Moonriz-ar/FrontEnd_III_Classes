@@ -2,7 +2,9 @@ import React from 'react'
 import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 import styled from 'styled-components'
-import PokiApp from './0LoPokimon/components/App'
+import PokiApp from './0LoPokimon/V1/components/App'
+import PokiAppV3Empty from './0LoPokimon/V3Empty/App'
+import PokiAppV3Completed from './0LoPokimon/V3Completed/App'
 import App5 from './Class 5 - Components/App'
 import App6 from './Class 6 - Repaso II/App'
 import App7 from './Class 7 - Componentes dinamicos/App'
@@ -78,9 +80,25 @@ const routes = [
   },
   {
     path: 'pokimon',
-    component: <PokiApp />,
     name: 'Lo Pokimon',
-  }
+    sub: [
+      {
+        path: 'V1',
+        component: <PokiApp />,
+        name: 'V1',
+      },
+      {
+        path: 'V3-empty',
+        component: <PokiAppV3Empty />,
+        name: `V3 solven't`,
+      },
+      {
+        path: 'V3-completed',
+        component: <PokiAppV3Completed />,
+        name: `V3 solved `,
+      },
+    ],
+  },
 ]
 
 const MainLayout = () => {
@@ -96,7 +114,11 @@ const MainLayout = () => {
           mode='inline'
           items={routes.map((r) => ({
             key: r.path,
-            label: <Link to={r.path}>{r.name}</Link>,
+            label: r.sub ? r.name : <Link to={r.path}>{r.name}</Link>,
+            children: r.sub?.map((s) => ({
+              key: s.path,
+              label: <Link to={`${r.path}/${s.path}`}>{s.name}</Link>,
+            })),
           }))}
         />
       </Layout.Sider>
@@ -118,8 +140,24 @@ const MainRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<MainLayout />}>
+          <Route index element={
+            <div>
+              &lt;- Selecciona una clase
+            </div>
+          }/>
           {routes.map((r) => (
-            <Route key={r.path} path={`${r.path}/*`} element={r.component} />
+            <Route
+              key={r.path}
+              path={`${r.path}/*`}
+              //if there is a sub route(r.sub) then render the outlet instead of the component
+              //r.component and r.sub are linked data,
+              //(if there is a sub route then there is no component)
+              //so this can be done in a better way
+              element={r.component || <Outlet />}
+              children={r.sub?.map((s) => (
+                <Route key={s.path} path={`${s.path}/*`} element={s.component} />
+              ))}
+            />
           ))}
           <Route path={`*`} element={<div>404</div>} />
         </Route>
