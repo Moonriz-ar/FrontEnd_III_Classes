@@ -15,6 +15,9 @@ import App12 from './Class 12 - Forms/App'
 import App14 from './Class 14 - api/App'
 import App15 from './Class 15 - Repaso api/App'
 import App16 from './Class 16 - React Router/App'
+import App19 from './Class 19 - Estilos/App'
+import App20 from './Class 20 - Hooks Adicionales/App'
+import App23 from './Class 23 - Composition/App'
 
 const Logo = styled.div`
   display: flex;
@@ -77,6 +80,21 @@ const routes = [
     path: 'class-16',
     component: <App16 />,
     name: 'Class 16 - React Router',
+  },
+  {
+    path: 'class-19',
+    component: <App19 />,
+    name: 'Class 19 - Estilos',
+  },
+  {
+    path: 'class-20',
+    component: <App20 />,
+    name: 'Class 20 - Hooks Adicionales',
+  },
+  {
+    path: 'class-23',
+    component: <App23 />,
+    name: 'Class 23 - Composition',
   },
   {
     path: 'pokimon',
