@@ -1,6 +1,7 @@
 import { Button } from 'antd'
 import React, { useCallback } from 'react'
-import Child from './Child'
+import RepoDetail from './RepoDetail'
+import RepoList from './RepoList'
 
 const App = () => {
   const [stateActive, setActive] = React.useState(false)
@@ -10,9 +11,12 @@ const App = () => {
     setActive(!stateActive)
   }
 
-  const handleCLickTag = useCallback((tag) => {
-    setTagActive(tag)
-  }, [])
+  const handleClickTag = React.useCallback(
+    (tag) => {
+      setTagActive(tag)
+    }
+    , []
+  )
 
   return (
     <div>
@@ -23,7 +27,9 @@ const App = () => {
         Selected tag: {tagActive}
       </div>
       <hr />
-      <Child onClickTag={handleCLickTag} />
+      {/* <RepoList /> */}
+      <hr />
+      <RepoDetail onClickTag={handleClickTag} />
     </div>
   )
 }
