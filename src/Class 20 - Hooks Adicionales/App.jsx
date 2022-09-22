@@ -1,5 +1,5 @@
 import { Button } from 'antd'
-import React, { useCallback } from 'react'
+import React from 'react'
 import RepoDetail from './RepoDetail'
 import RepoList from './RepoList'
 
@@ -18,7 +18,7 @@ const App = () => {
       <hr />
       {/* <RepoList /> */}
       <hr />
-      <RepoDetail ref={ref} />
+      <RepoDetail />
     </div>
   )
 }

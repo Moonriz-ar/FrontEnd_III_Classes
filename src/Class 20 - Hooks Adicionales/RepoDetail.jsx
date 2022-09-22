@@ -27,26 +27,30 @@ const useApiGithub = () => {
   const [data, setData] = React.useState({})
   const [repo, setRepo] = React.useState("FrontEnd_III_Classes")
 
-  const parseRepo = (repo) => {
-    return repo.replace(/ /g, "_")
+  const parseRepo = (param) => {
+    return param.replace(/ /g, "_")
   }
   
   const getData = React.useCallback(
     async () => {
       console.log('repo', repo)
-      const newRepo = parseRepo(repo)
+      /*
+        no necesitamos agregar parseRepo a las dependencias
+        ya que la funcion recibe todo lo que necesita como parametro
+        (probar que pasa si parseRepo en lugar de udar el param, usa el estado 'repo')
+      */
+      const newRepo = parseRepo(repo) //esta linea es solo de test
       await new Promise(r => setTimeout(r, 200)); //sleep
       const response = { ...mockedLanguages[repo] }
       setData(response)
     },
-    [repo]
+    [repo] //si no agregamos repo, la funcion se ejecuta con el snapshot inicial de repo
   )
 
   React.useEffect(() => {
-    console.log(repo)
-  }, [repo])
-
-  React.useEffect(() => {
+    /*
+      get data depende del estado, por lo que debemos agregarlo a las dependencias
+    */
     getData()
   }, [getData])
 
@@ -59,6 +63,16 @@ const useApiGithub = () => {
 const RepoDetail = (props) => {
   const { data, setRepo } = useApiGithub()
   const [text, setText] = React.useState("")
+  /*
+    una ref no es un estado
+    no dispara un rerender si cambia
+    podemos utilizarlo para actualizar valores que no nos importe mostrar en el dom,
+    pero que sean importantes para alguna funcion
+    una ref tiene una estructura tal que:
+    {
+      current: valor
+    }
+  */
   const inputRef = React.useRef(null)
 
   console.log(inputRef)
@@ -67,6 +81,11 @@ const RepoDetail = (props) => {
     setRepo(e.target.value)
   }
 
+  /**
+   * memoizamos calculos complejos para que no se vuelvan a ejecutar
+   * ante cualquier cambio de state o props
+   * solo miramos el arreglo de dependencia
+   */
   const memoizedLanguages = React.useMemo(
     () => {
       const total = Object.values(data).reduce(
@@ -88,7 +107,6 @@ const RepoDetail = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    //inputRef.current.value = "asdf"
     if (!text) {
       message.error('Please enter something')
       inputRef.current.focus()
@@ -108,12 +126,16 @@ const RepoDetail = (props) => {
         <div key={language.name}>{language.name} - {language.percentage.toFixed(2)}%</div>
       ))}
       <form onSubmit={handleSubmit}>
+        {/**
+         * el ref se puede utilizar en cualquier elemento NATIVO
+         * no se puede utilizar en componentes personalizados
+         */}
         <input ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} />
-        {Array(100).fill(0).map((_, i) => (
-          <Row key={i}>
-            <Col span={6}>{i}</Col>
-          </Row>
-        ))}
+        <Row> {/* filling space */}
+          {Array(100).fill(0).map((_, i) => (
+            <Col key={i} span={6}>{i}</Col>
+          ))}
+        </Row>
         <button type="submit">Submit</button>
       </form>
     </div>
