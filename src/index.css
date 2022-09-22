@@ -26,6 +26,13 @@ button:hover {
   background-color: #444;
 }
 
+/*button disabled*/
+button[disabled] {
+  background-color: #222;
+  cursor: not-allowed;
+  color: #666;
+}
+
 .app {
   display: flex;
   flex-direction: column;

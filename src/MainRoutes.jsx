@@ -17,7 +17,8 @@ import App15 from './Class 15 - Repaso api/App'
 import App16 from './Class 16 - React Router/App'
 import App19 from './Class 19 - Estilos/App'
 import App20 from './Class 20 - Hooks Adicionales/App'
-import App23 from './Class 23 - Composition/App'
+import App24 from './Class 24 - Composition/App'
+import App25 from './Class 25 - context/App'
 
 const Logo = styled.div`
   display: flex;
@@ -92,9 +93,14 @@ const routes = [
     name: 'Class 20 - Hooks Adicionales',
   },
   {
-    path: 'class-23',
-    component: <App23 />,
-    name: 'Class 23 - Composition',
+    path: 'class-24',
+    component: <App24 />,
+    name: 'Class 24 - Composition',
+  },
+  {
+    path: 'class-25',
+    component: <App25 />,
+    name: 'Class 25 - Context',
   },
   {
     path: 'pokimon',
